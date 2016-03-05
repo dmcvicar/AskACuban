@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AskACuban</string>
+
+    <string-array name="test_questions">
+        <item>What\'s it like to be Cuban?</item>
+        <item>How can I help a Cuban?</item>
+        <item>How ready is Cuba for US Tourists?</item>
+        <item>Is there cuban interest in US Travel?</item>
+        <item>What is the public perception of US Corporations?</item>
+        <item>What\'s public sentiment on socialism in the 21st Century?</item>
+        <item>How are you today?</item>
+    </string-array>
+    <string name="title_activity_post_item">PostItemActivity</string>
+    <string name="title_activity_view_comments">ListCommentsActivity</string>
+</resources>
