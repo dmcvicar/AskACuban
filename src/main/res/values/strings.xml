@@ -10,6 +10,33 @@
         <item>What\'s public sentiment on socialism in the 21st Century?</item>
         <item>How are you today?</item>
     </string-array>
+    <string-array name="test_comments">
+        <item>Sup dude</item>
+        <item>Hi</item>
+        <item>I\'m American!</item>
+    </string-array>
     <string name="title_activity_post_item">PostItemActivity</string>
     <string name="title_activity_view_comments">ListCommentsActivity</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_username">This username is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="title_activity_list_items">List Questions</string>
+    <string name="title_activity_post_comment">PostCommentActivity</string>
+    <string name="comment_label">Comment:</string>
+    <string name="question_label">Question:</string>
+    <string name="submit">Submit</string>
+    <string name="usernamelabel">"Posting as: "</string>
+    <string name="items_view_url">https://ask-a-cuban.herokuapp.com/items.json</string>
+    <string name="items_new_url">https://ask-a-cuban.herokuapp.com/items/new</string>
+    <string name="logon_url">https://ask-a-cuban.herokuapp.com/items.json?username=%s</string>
+    <string name="new_item_body">{ \"user_id\": %1$d, \"title\": %2$s, \"content\": %3$s }</string>
+    <string name="dateformat">yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'</string>
 </resources>

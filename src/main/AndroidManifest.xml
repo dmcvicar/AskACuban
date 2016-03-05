@@ -10,7 +10,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListItemsActivity">
+        <activity
+            android:name=".activities.ListItemsActivity"
+            android:label="@string/title_activity_list_items"></activity>
+        <activity
+            android:name=".activities.PostItemActivity"
+            android:label="@string/title_activity_post_item" />
+        <activity
+            android:name=".activities.ListCommentsActivity"
+            android:label="@string/title_activity_view_comments" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,11 +29,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PostItemActivity"
-            android:label="@string/title_activity_post_item" />
-        <activity
-            android:name=".ListCommentsActivity"
-            android:label="@string/title_activity_view_comments"/>
+            android:name=".activities.PostCommentActivity"
+            android:label="@string/title_activity_post_comment"></activity>
     </application>
 
 </manifest>
