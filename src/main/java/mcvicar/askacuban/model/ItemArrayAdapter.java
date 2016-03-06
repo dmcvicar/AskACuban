@@ -28,7 +28,7 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         this.values = values;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final View rowView = inflater.inflate(R.layout.item_list_element_layout, parent, false);
@@ -38,6 +38,7 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
             @Override
             public void onClick(View v) {
                 Intent viewCommentsIntent = new Intent(rowView.getContext(), ListCommentsActivity.class);
+                viewCommentsIntent.putExtra("item_id",values.get(position).getId());
                 rowView.getContext().startActivity(viewCommentsIntent);
             }
         });

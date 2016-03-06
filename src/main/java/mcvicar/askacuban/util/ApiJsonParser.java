@@ -1,6 +1,7 @@
 package mcvicar.askacuban.util;
 
 import android.util.JsonReader;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import mcvicar.askacuban.model.Comment;
 import mcvicar.askacuban.model.Item;
 import mcvicar.askacuban.model.User;
 
@@ -15,6 +17,8 @@ import mcvicar.askacuban.model.User;
  * Created by davidmcvicar on 3/5/16.
  */
 public class ApiJsonParser {
+
+    private static final String DEBUG_TAG = "ApiCaller Debug: ";
 
     public static List<Item> readItemArray(InputStream content) {
         JsonReader reader = null;
@@ -102,6 +106,56 @@ public class ApiJsonParser {
             reader.endObject();
             return newUser;
         } catch (IOException ioe) {
+            return null;
+        }
+    }
+
+    public static List<Comment> readCommentArray(InputStream content) {
+        Log.d(DEBUG_TAG, "Entering ReadCommentArray");
+        JsonReader reader = null;
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        try {
+            reader = new JsonReader(new InputStreamReader(content));
+            reader.beginObject();
+            while(reader.hasNext()) {
+                String name = reader.nextName();
+                Log.d(DEBUG_TAG,name);
+                if ("comments".equals(name)) {
+                    reader.beginArray();
+                    while(reader.hasNext())
+                        comments.add(readComment(reader));
+                    reader.endArray();
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            return comments;
+        } catch( IOException ioe) {
+            Log.d(DEBUG_TAG, "Exception Throwm");
+            return null;
+        } finally {
+            try{ if(reader != null) reader.close(); } catch (IOException ioe) {} //fail quietly
+        }
+    }
+
+    public static Comment readComment(JsonReader reader) {
+        Log.d(DEBUG_TAG, "Entering ReadComment");
+        Comment newComment = new Comment();
+        try {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                Log.d(DEBUG_TAG,name);
+                if("content".equals(name))
+                    newComment.setContent(reader.nextString());
+                else
+                    reader.skipValue();
+            }
+            reader.endObject();
+            return newComment;
+        } catch (IOException ioe) {
+            Log.d(DEBUG_TAG, "Exception Throwm");
             return null;
         }
     }
