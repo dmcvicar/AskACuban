@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.JsonWriter;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -17,13 +21,14 @@ import mcvicar.askacuban.R;
 
 public class PostItemActivity extends ActionBarActivity {
 
+    private final String DEBUG_TAG = "Debug: PostItemActivity";
+
     TextView usernameView;
     EditText questionView;
     EditText titleView;
     String question;
     String username;
     String title;
-    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,6 @@ public class PostItemActivity extends ActionBarActivity {
         setContentView(R.layout.activity_post_item);
 
         username = getIntent().getExtras().getString("username");
-        userId = getIntent().getExtras().getInt("userId");
 
         usernameView = (TextView) findViewById(R.id.username);
         titleView = (EditText) findViewById(R.id.title);
@@ -42,38 +46,46 @@ public class PostItemActivity extends ActionBarActivity {
     public void postItem(View view) {
         title = titleView.getText().toString();
         question = questionView.getText().toString();
-        String jsonData = String.format(getString(R.string.new_item_body),
-                userId,
-                title,
-                question
-        );
-        new PostItemToServer().execute(jsonData);
+        new PostItemToServer().execute();
     }
 
-    public class PostItemToServer extends AsyncTask<String, Void, Boolean> {
+    public class PostItemToServer extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             URL apiURL;
             HttpURLConnection conn = null;
-            BufferedOutputStream output;
-            String jsonData = params[0];
-            byte[] messageBody = jsonData.getBytes();
+            JsonWriter writer = null;
+            boolean retVal = false;
             try {
-                apiURL = new URL("@string/items_new_url");
+                apiURL = new URL(String.format(getString(R.string.items_new_url),username.replace(" ","%20")));
                 conn = (HttpURLConnection) apiURL.openConnection();
                 conn.setDoOutput(true);
                 conn.setChunkedStreamingMode(0);
-                output = new BufferedOutputStream(conn.getOutputStream());
-                output.write(messageBody);
-                if(conn.getResponseCode() == 200)
-                    return true;
-                else
-                    return false;
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                writer = new JsonWriter(new OutputStreamWriter(new BufferedOutputStream(conn.getOutputStream())));
+                writer.beginObject();
+                writer.name("item").beginObject();
+                writer.name("title").value(title);
+                writer.name("content").value(question);
+                writer.endObject();
+                writer.endObject();
+                writer.close();
+                Log.d(DEBUG_TAG,"URL: " + apiURL.toString());
+                Log.d(DEBUG_TAG,"Error Code: " + conn.getResponseCode());
+                if(conn.getResponseCode() == 200) {
+                    conn.disconnect();
+                    retVal = true;
+                } else {
+                    conn.disconnect();
+                }
             } catch(Exception e) {
-                return false;
+                return retVal;
             } finally {
                 if(conn != null) conn.disconnect();
+                try { if(writer != null) writer.close(); } catch (IOException ioe){} //fail quietly
+                return retVal;
             }
         }
 
@@ -85,10 +97,7 @@ public class PostItemActivity extends ActionBarActivity {
                 postToast = Toast.makeText(getBaseContext(),"Post Failed",Toast.LENGTH_SHORT);
             }
             postToast.show();
-            Intent listItemsIntent = new Intent(getBaseContext(), ListItemsActivity.class);
-            listItemsIntent.putExtra("username",username);
-            listItemsIntent.putExtra("userId", userId);
-            startActivity(listItemsIntent);
+            finish();
         }
     }
 }

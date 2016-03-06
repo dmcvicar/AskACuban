@@ -19,15 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import mcvicar.askacuban.R;
-import mcvicar.askacuban.model.Item;
 import mcvicar.askacuban.model.User;
-import mcvicar.askacuban.util.ApiJsonParser;
 
 
 /**
@@ -176,7 +173,7 @@ public class LoginActivity extends ActionBarActivity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUsername;
         private final String mPassword;
@@ -186,32 +183,18 @@ public class LoginActivity extends ActionBarActivity {
             mPassword = password;
         }
 
-        protected Integer doInBackground(Void... params) {
-            URL apiURL;
-            HttpURLConnection conn = null;
-            User user;
-            try {
-                apiURL = new URL(String.format(getString(R.string.logon_url),mUsername).toString());
-                conn = (HttpURLConnection) apiURL.openConnection();
-                BufferedInputStream content = new BufferedInputStream(conn.getInputStream());
-                user = ApiJsonParser.readUser(content);
-                return user.getId();
-            } catch(IOException ioe) {
-                return -1;
-            } finally {
-                if(conn != null) conn.disconnect();
-            }
+        protected Boolean doInBackground(Void... params) {
+                return true;
         }
 
         @Override
-        protected void onPostExecute(final Integer id) {
+        protected void onPostExecute(final Boolean result) {
             mAuthTask = null;
             showProgress(false);
 
-            if (id != -1) {
+            if (result) {
                 Intent listItemsIntent = new Intent(getBaseContext(), ListItemsActivity.class);
                 listItemsIntent.putExtra("username",mUsername);
-                listItemsIntent.putExtra("userId",id);
                 startActivity(listItemsIntent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

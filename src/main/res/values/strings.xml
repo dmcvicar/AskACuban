@@ -32,11 +32,10 @@
     <string name="title_activity_post_comment">PostCommentActivity</string>
     <string name="comment_label">Comment:</string>
     <string name="question_label">Question:</string>
+    <string name="title_label">Title:</string>
     <string name="submit">Submit</string>
     <string name="usernamelabel">"Posting as: "</string>
     <string name="items_view_url">https://ask-a-cuban.herokuapp.com/items.json</string>
-    <string name="items_new_url">https://ask-a-cuban.herokuapp.com/items/new</string>
+    <string name="items_new_url">https://ask-a-cuban.herokuapp.com/items.json?username=%1$s</string>
     <string name="logon_url">https://ask-a-cuban.herokuapp.com/items.json?username=%s</string>
-    <string name="new_item_body">{ \"user_id\": %1$d, \"title\": %2$s, \"content\": %3$s }</string>
-    <string name="dateformat">yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'</string>
 </resources>

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,7 +26,6 @@ public class ListItemsActivity extends ActionBarActivity implements AdapterView.
     private ListAdapter itemsAdapter;
     private ListView itemsView;
     private String username;
-    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +33,10 @@ public class ListItemsActivity extends ActionBarActivity implements AdapterView.
         setContentView(R.layout.activity_list_items);
 
         username = getIntent().getExtras().getString("username");
-        userId = getIntent().getExtras().getInt("userId");
 
         itemsView = (ListView)findViewById(R.id.questions_list);
         itemsView.setOnItemClickListener(this);
-        new GetItems().execute(username);
+        new GetItems().execute();
     }
 
     @Override
@@ -52,14 +51,17 @@ public class ListItemsActivity extends ActionBarActivity implements AdapterView.
     public void postQuestionClick(View view) {
         Intent postQuestionIntent = new Intent(this, PostItemActivity.class);
         postQuestionIntent.putExtra("username",username);
-        postQuestionIntent.putExtra("userId",userId);
-        startActivity(postQuestionIntent);
+        startActivityForResult(postQuestionIntent, 1);
     }
 
-    public class GetItems extends AsyncTask<String, Void, String[]> {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        new GetItems().execute();
+    }
+
+    public class GetItems extends AsyncTask<Void, Void, String[]> {
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected String[] doInBackground(Void... params) {
             URL apiURL;
             HttpURLConnection conn = null;
             List<Item> items;

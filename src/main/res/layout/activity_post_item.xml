@@ -17,16 +17,30 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/question_label"
-        android:text="@string/question_label"
+        android:id="@+id/title_label"
+        android:text="@string/title_label"
         android:layout_below="@+id/username"
         android:layout_marginTop="20dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:layout_below="@+id/title_label"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/question_label"
+        android:text="@string/question_label"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/question"
-        android:layout_below="@+id/quesion_label"/>
+        android:layout_below="@+id/question_label"/>
 
     <Button
         android:layout_width="wrap_content"

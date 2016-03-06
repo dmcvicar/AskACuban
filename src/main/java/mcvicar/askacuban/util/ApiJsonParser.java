@@ -46,8 +46,6 @@ public class ApiJsonParser {
                     newItem.setUser_id(reader.nextInt());
                 } else if("title".equals(name)) {
                     newItem.setTitle(reader.nextString());
-                } else if("url".equals(name)) {
-                    //do nothing
                 } else if("content".equals(name)) {
                     try {
                         newItem.setContent(reader.nextString());
@@ -61,8 +59,6 @@ public class ApiJsonParser {
                     newItem.setComments_count(reader.nextInt());
                 } else if("upvotes_count".equals(name)) {
                     newItem.setUpvotes_count(reader.nextInt());
-                } else if("downvotes_count".equals(name)) {
-                    //do nothing
                 } else if("score".equals(name)) {
                     newItem.setScore(reader.nextInt());
                 } else if("rank".equals(name)) {
@@ -71,6 +67,8 @@ public class ApiJsonParser {
                     newItem.setCreated_at(reader.nextString());
                 } else if("updated_at".equals(name)) {
                     newItem.setUpdated_at(reader.nextString());
+                } else {
+                    reader.skipValue();
                 }
             }
             reader.endObject();
@@ -92,6 +90,8 @@ public class ApiJsonParser {
                     newUser.setId(reader.nextInt());
                 } else if("username".equals(name)) {
                     newUser.setUsername(reader.nextString());
+                } else {
+                    reader.skipValue();
                 }
             }
             reader.endObject();
