@@ -21,7 +21,7 @@ public class ListCommentsActivity extends ActionBarActivity {
 
         //selectedItemId = getIntent().getExtras().getString("");
 
-        commentsAdapter = new ArrayAdapter<>(this,R.layout.list_item_layout,
+        commentsAdapter = new ArrayAdapter<>(this,R.layout.comment_list_element_layout,
                 R.id.list_item,getResources().getStringArray(R.array.test_comments));
         commentsView = (ListView)findViewById(R.id.comments_list);
         commentsView.setAdapter(commentsAdapter);

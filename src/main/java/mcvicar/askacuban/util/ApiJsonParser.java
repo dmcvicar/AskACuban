@@ -67,6 +67,11 @@ public class ApiJsonParser {
                     newItem.setCreated_at(reader.nextString());
                 } else if("updated_at".equals(name)) {
                     newItem.setUpdated_at(reader.nextString());
+                } else if("user".equals(name)) {
+                    reader.beginObject();
+                    reader.nextName();
+                    newItem.setUsername(reader.nextString());
+                    reader.endObject();
                 } else {
                     reader.skipValue();
                 }

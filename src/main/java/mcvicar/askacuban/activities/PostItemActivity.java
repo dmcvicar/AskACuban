@@ -1,6 +1,5 @@
 package mcvicar.askacuban.activities;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,8 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -60,26 +60,28 @@ public class PostItemActivity extends ActionBarActivity {
             try {
                 apiURL = new URL(String.format(getString(R.string.items_new_url),username.replace(" ","%20")));
                 conn = (HttpURLConnection) apiURL.openConnection();
-                conn.setDoOutput(true);
                 conn.setChunkedStreamingMode(0);
                 conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestProperty("Accept", "application/json");
-                writer = new JsonWriter(new OutputStreamWriter(new BufferedOutputStream(conn.getOutputStream())));
+                conn.setUseCaches(false);
+                conn.setDoOutput(true);
+                OutputStream connectionOutputStream = conn.getOutputStream();
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connectionOutputStream);
+                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+                writer = new JsonWriter(new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(),"UTF-8")));
                 writer.beginObject();
-                writer.name("item").beginObject();
+                writer.name("item");
+                writer.beginObject();
                 writer.name("title").value(title);
                 writer.name("content").value(question);
                 writer.endObject();
                 writer.endObject();
                 writer.close();
+                bufferedWriter.write("{\"item\":{\"title\":\"hello\",\"content\":\"world\"}}");
+                bufferedWriter.close();
                 Log.d(DEBUG_TAG,"URL: " + apiURL.toString());
                 Log.d(DEBUG_TAG,"Error Code: " + conn.getResponseCode());
-                if(conn.getResponseCode() == 200) {
-                    conn.disconnect();
+                if(conn.getResponseCode() == 200)
                     retVal = true;
-                } else {
-                    conn.disconnect();
-                }
             } catch(Exception e) {
                 return retVal;
             } finally {

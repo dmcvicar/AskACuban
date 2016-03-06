@@ -17,7 +17,7 @@ public class Item {
     private int rank;
     private String created_at;
     private String updated_at;
-
+    private String username;
 
     public int getUpvotes_count() {
         return upvotes_count;
@@ -105,5 +105,13 @@ public class Item {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
